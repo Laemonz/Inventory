@@ -1,29 +1,23 @@
 const express = require('express')
 const router = express.Router()
 require('dotenv').config()
-//const mongoose = require('mongoose')
-const Item = require('../models/Item')
-
-const { validationError, castError } = require('../constants/errorNames')
-
-const errorCodes = require('../constants/errorCodes')
-const errorMessages = require('../constants/errorMessages')
-
-const HttpError = require('../constants/errors/HttpError')
-const ValidationError = require('../constants/errors/ValidationError')
-const InternalServerError = require('../constants/errors/InternalServerError')
-const NotFoundError = require('../constants/errors/NotFoundError')
-
+const {
+    getItems,
+    createItem,
+    getItem,
+    deleteItem,
+    restoreItem
+} = require('../operations/itemOperations')
 
 /**
  * Get all items
  */
-router.route('/').get( async(req,res) => {
+router.route('/').get( async(req, res, next) => {
     try{
-        const items = await Item.find({}).exec(); 
+        const items = await getItems()
         res.status(200).json(items)
     } catch (err) {
-        res.status(500).send('Error: cannot get items')
+        next(err)
     }
 })
 
@@ -31,109 +25,61 @@ router.route('/').get( async(req,res) => {
 * Create a new item
 */
 router.route('/create').post( async(req,res, next) => {
-    const item = new Item({
-        name: req.body.name,
-        price: req.body.price,
-        deleted: false,
-        deletionComment: null,
-    });
+    const name= req.body.name;
+    const price = req.body.price;
 
     try{
-        await item.save();
-        res.status(200).send('Item added!');
+        await createItem(name, price)
+        res.status(200).send('created')
     }
     catch(err){
-        if (err.name === validationError){
-            console.log('throwing!!!!!!!!!!!');
-            throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
-        }
-        else{
-            console.log('still throwing!!!!!!!!!!!');
-            throw new InternalServerError();
-        }
+        next(err);
     }
 });
 
 /**
  * Get an item
  */
-router.route('/getItem/:itemID').get(async(req,res) => {
+router.route('/getItem/:itemID').get(async(req, res, next) => {
     const id = req.params.itemID;
-    let item = null;
     try{
-         item = await Item.findById(id).exec();
+         const item = await getItem(id);
          res.status(200).json(item);
-    } catch (err) {
-        if (err.name === castError){
-            throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
-        }
-        else{
-            throw new InternalServerError();
-        }
+    } catch(err){
+        next(err);
     }
-
-    // if (!item){
-    //     throw new NotFoundError(errorCodes.itemNotFound, errorMessages.itemNotFound);
-    // }
-     
 });
 
 /**
  * Delete an item
  */
- router.route('/delete/').patch((req,res) => {
+ router.route('/delete/').patch(async(req, res, next) => {
     const id = req.body.id;
     const reason = req.body.reason;
 
-    console.log(req.body);
-
-    if (!reason){
-        throw new HttpError(400, errorCodes.invalidReason, errorMessages.invalidReason)
+    try{
+        await deleteItem(id, reason)
+        res.status(200).send('deleted')
+    } catch(err){
+        next(err);
     }
 
-    Item.findOneAndUpdate(
-        {id: id},
-        { 
-            $set: { 
-                deleted: true,
-                deletionComment: reason, 
-            } 
-        },
-        (error) => {
-            if (error) {
-                res.status(404).send('Error: cannot delete item!');
-            }
-            else {
-                res.status(200).send('Item deleted!');
-            }
-        }
-    )
 })
 
 /**
  * Restore an item
  */
- router.route('/restore/').patch((req,res) => {
-    const id = req.body.id;
+ router.route('/restore/').patch(async(req, res, next) => {
+     const id = req.body.id;
 
-    Item.findOneAndUpdate(
-        {id: id},
-        { 
-            $set: { 
-                deleted: false,
-                deletionComment: null, 
-            } 
-        },
-        (error) => {
-            if (error) {
-                res.status(404).send('Error: cannot restore item!');
-            }
-            else {
-                res.status(200).send('Item restored!');
-            }
-        }
-    )
-})
+     try{
+         await restoreItem(id)
+         res.status(200).send('restored')
+     } catch(err){
+         next(err);
+     }
+
+ })
 
 
 module.exports = {router}

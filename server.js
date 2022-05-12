@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === 'production'){
 
 
 
-mongoose.connect(`${MONGODB_URI}/movies`, { useNewUrlParser: true, useUnifiedTopology:true });
+mongoose.connect(`${MONGODB_URI}/ShopifyItems`, { useNewUrlParser: true, useUnifiedTopology:true });
 const connection = mongoose.connection;
 
 connection.once('open', () =>  {

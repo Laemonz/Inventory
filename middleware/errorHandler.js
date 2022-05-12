@@ -4,7 +4,8 @@ const errorMessages = require('../constants/errorMessages')
 
 
 const errorHandler = (error, req, res, next) => {
-    console.log('handling error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('error:');
+    console.log(error);
     if (error instanceof HttpError){
         const {status, code, message } = error;
         res.status(status).send({code, message})
