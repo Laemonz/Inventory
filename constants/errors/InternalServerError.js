@@ -4,9 +4,7 @@ const HttpError = require("./HttpError");
 
 class InternalServerError extends HttpError{
     constructor() {
-        super(errorMessages.internalServerError);
-        this.status = 500;
-        this.code = errorCodes.internalServerError;
+        super(500, errorCodes.internalServerError, errorMessages.internalServerError);
     }
 }
 
