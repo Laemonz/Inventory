@@ -11,6 +11,7 @@ const ViewItems = (props) => {
     const ItemActionProps = {
         handleEdit: () => console.log('Clicked Edit'),
         handleDelete: () => console.log('Clicked Delete'),
+        handleRestore: () => console.log('Clicked Restore'),
     };
 
     useEffect(() => {
@@ -35,7 +36,7 @@ const ViewItems = (props) => {
                         <TableCell align="right">Price</TableCell>
                         <TableCell align="right">Deleted</TableCell>
                         <TableCell align="right">Deletion Comment</TableCell>
-                        <TableCell align="right">Actions</TableCell>
+                        <TableCell align="center">Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -50,7 +51,7 @@ const ViewItems = (props) => {
                             <TableCell align="right">{item.price}</TableCell>
                             <TableCell align="right">{item.deleted ? 'Yes' : 'No'}</TableCell>
                             <TableCell align="right">{item.deletionComment}</TableCell>
-                            <TableCell align="right">
+                            <TableCell align="center">
                                 <ItemActions {...ItemActionProps}/>
                             </TableCell>
                         </TableRow>
