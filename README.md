@@ -25,8 +25,8 @@ Create a `.env` file in `/` and set the following variables
    ```
 
 ## Running the App ##
-1. Start the Server by running `npm start:server` from the root directory
-2. Start the React app by running `npm start:client` from the root directory
+1. Start the Server by running `npm run start:server` from the root directory
+2. Start the React app by running `npm run start:client` from the root directory
 3. The app can now be seen by navigating to http://localhost:3000. The server will be running on http://localhost:4000
 
 ## Running the Production Build

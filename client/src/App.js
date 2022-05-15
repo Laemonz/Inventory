@@ -1,14 +1,25 @@
 import './App.css';
 import ViewItems from "./components/ViewItems";
-import Container from "@mui/material/Container";
 import serverConstants from "./constants/server";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import CreateItem from "./components/CreateItem";
+import {Container} from "@mui/material";
+import ItemAppBar from "./components/AppBar";
 
 function App() {
     return (
         <div className="App">
-            <Container maxWidth="lg">
-                <ViewItems server={serverConstants.server}/>
-            </Container>
+            <BrowserRouter>
+                <ItemAppBar />
+                <Container maxWidth="lg">
+                    <Routes>
+                        <Route path="/" element={<ViewItems server={serverConstants.server} exact/>} />
+                        <Route path="/create" element={<CreateItem />} />
+                        {/*<Route path="/delete" element={<Invoices />} />*/}
+                        {/*<Route path="/restore" element={<Invoices />} />*/}
+                    </Routes>
+                </Container>
+            </BrowserRouter>
         </div>
     );
 }
