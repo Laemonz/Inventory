@@ -11,6 +11,7 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <ItemAppBar />
+                <br/><br/>
                 <Container maxWidth="lg">
                     <Routes>
                         <Route path="/" element={<ViewItems server={serverConstants.server} exact/>} />

@@ -10,10 +10,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import Link from '@mui/material/Link';
 import {Link as RouterLink} from 'react-router-dom'
-
-const pages = ['Items', 'Create'];
 
 const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -77,11 +74,26 @@ const ResponsiveAppBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem key={'items'} onClick={handleCloseNavMenu}>
+                                <Typography
+                                    textAlign="center"
+                                    component={RouterLink}
+                                    to="/"
+                                    sx={{textDecoration: 'none', color: 'black'}}
+                                >
+                                    Items
+                                </Typography>
+                            </MenuItem>
+                            <MenuItem key={'items'} onClick={handleCloseNavMenu}>
+                                <Typography
+                                    textAlign="center"
+                                    component={RouterLink}
+                                    to="/create"
+                                    sx={{textDecoration: 'none', color: 'black'}}
+                                >
+                                    Create
+                                </Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <InventoryIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -106,22 +118,22 @@ const ResponsiveAppBar = () => {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button
                             key={'items'}
-                            onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
+                            //onClick={handleCloseNavMenu}
+                            component={RouterLink}
+                            to="/"
+                            sx={{ my: 2, color: 'white', display: 'flex' }}
                         >
-                            <Link component={RouterLink} to="/" color={'inherit'}>
-                                Items
-                            </Link>
+                            Items
                         </Button>
 
                         <Button
                             key={'create'}
-                            onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
+                            //onClick={handleCloseNavMenu}
+                            component={RouterLink}
+                            to="/create"
+                            sx={{ my: 2, color: 'white', display: 'flex' }}
                         >
-                            <Link component={RouterLink} to="/create" color={'inherit'}>
-                                Create
-                            </Link>
+                            Create
                         </Button>
                     </Box>
                 </Toolbar>
