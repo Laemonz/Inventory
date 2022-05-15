@@ -20,6 +20,7 @@ const getItems = async() =>  await Item.find({}).exec();
  * Create a new item
  */
 const createItem= async(name, price) => {
+    console.log(`Creating Item with properties name: [${name}] and price: [${price}]`);
     const item = new Item({
         name: name,
         price: price,

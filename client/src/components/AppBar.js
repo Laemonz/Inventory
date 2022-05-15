@@ -84,7 +84,7 @@ const ResponsiveAppBar = () => {
                                     Items
                                 </Typography>
                             </MenuItem>
-                            <MenuItem key={'items'} onClick={handleCloseNavMenu}>
+                            <MenuItem key={'create'} onClick={handleCloseNavMenu}>
                                 <Typography
                                     textAlign="center"
                                     component={RouterLink}

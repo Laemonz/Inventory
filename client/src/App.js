@@ -15,7 +15,7 @@ function App() {
                 <Container maxWidth="lg">
                     <Routes>
                         <Route path="/" element={<ViewItems server={serverConstants.server} exact/>} />
-                        <Route path="/create" element={<CreateItem />} />
+                        <Route path="/create" element={<CreateItem server={serverConstants.server}/>} />
                         {/*<Route path="/delete" element={<Invoices />} />*/}
                         {/*<Route path="/restore" element={<Invoices />} />*/}
                     </Routes>
