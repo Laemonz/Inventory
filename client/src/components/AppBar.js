@@ -10,12 +10,13 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import Link from '@mui/material/Link';
+import {Link as RouterLink} from 'react-router-dom'
 
 const pages = ['Items', 'Create'];
 
 const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -103,15 +104,25 @@ const ResponsiveAppBar = () => {
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            key={'items'}
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            <Link component={RouterLink} to="/" color={'inherit'}>
+                                Items
+                            </Link>
+                        </Button>
+
+                        <Button
+                            key={'create'}
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            <Link component={RouterLink} to="/create" color={'inherit'}>
+                                Create
+                            </Link>
+                        </Button>
                     </Box>
                 </Toolbar>
             </Container>

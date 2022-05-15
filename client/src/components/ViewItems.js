@@ -52,7 +52,12 @@ const ViewItems = (props) => {
                             <TableCell align="right">{item.deleted ? 'Yes' : 'No'}</TableCell>
                             <TableCell align="right">{item.deletionComment}</TableCell>
                             <TableCell align="center">
-                                <ItemActions {...ItemActionProps}/>
+                                <ItemActions {
+                                    ...{
+                                        ...ItemActionProps,
+                                        id: item._id,
+                                    }
+                                }/>
                             </TableCell>
                         </TableRow>
                     ))}
