@@ -5,6 +5,7 @@ import CreateItem from "./components/CreateItem";
 import {Container} from "@mui/material";
 import ItemAppBar from "./components/AppBar";
 import EditItem from "./components/EditItem";
+import DeleteItem from "./components/DeleteItem";
 
 function App() {
     return (
@@ -17,8 +18,7 @@ function App() {
                         <Route path="/" element={<ViewItems exact/>} />
                         <Route path="/create" element={<CreateItem />} />
                         <Route path="/edit" element={<EditItem />} />
-                        {/*<Route path="/delete" element={<Invoices />} />*/}
-                        {/*<Route path="/restore" element={<Invoices />} />*/}
+                        <Route path="/delete" element={<DeleteItem />} />
                     </Routes>
                 </Container>
             </BrowserRouter>
