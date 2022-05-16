@@ -20,7 +20,6 @@ const getItems = async() =>  await Item.find({}).exec();
  * Create a new item
  */
 const createItem= async(name, price) => {
-    console.log(`Creating Item with properties name: [${name}] and price: [${price}]`);
     const item = new Item({
         name: name,
         price: price,
@@ -63,10 +62,35 @@ const getItem = async(id) => {
 }
 
 /**
+ * Edit an item
+ */
+const editItem = async(id, name, price) => {
+    const priceNumber = parseInt(price);
+    if (typeof name !== 'string' || isNaN(priceNumber)){
+        throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
+    }
+
+    Item.findOneAndUpdate(
+        {id: id},
+        {
+            $set: {
+                name: name,
+                price: priceNumber,
+            }
+        },
+        (error) => {
+            if (error) {
+                throw new NotFoundError(errorCodes.itemNotFound, errorMessages.itemNotFound)
+            }
+        }
+    )
+}
+
+/**
  * Delete an item
  */
 const deleteItem = async(id, reason) => {
-    if (!reason){
+    if (!reason || typeof reason !=='string'){
         throw new ValidationError(errorCodes.invalidReason, errorMessages.invalidReason)
     }
 
@@ -111,6 +135,7 @@ module.exports = {
     getItems,
     createItem,
     getItem,
+    editItem,
     deleteItem,
     restoreItem
 }
