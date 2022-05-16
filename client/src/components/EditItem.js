@@ -6,10 +6,10 @@ import Button from "@mui/material/Button";
 import {useState} from "react";
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
+import serverConstants from "../constants/server";
 
 
-const EditItem = (props) => {
-    const {server} = props;
+const EditItem = () => {
     const [formValues, setFormValues] = useState();
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,7 +25,7 @@ const EditItem = (props) => {
     };
 
     const editItem = async() => {
-        const URL = `${server}/items/edit`
+        const URL = `${serverConstants.server}/items/edit`
         const data = {
             id,
             name: formValues.name,

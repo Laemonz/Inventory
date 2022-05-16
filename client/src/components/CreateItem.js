@@ -6,10 +6,10 @@ import Button from "@mui/material/Button";
 import {useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import serverConstants from "../constants/server";
 
 
-const CreateItem = (props) => {
-    const {server} = props;
+const CreateItem = () => {
     const [formValues, setFormValues] = useState();
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const CreateItem = (props) => {
     };
 
     const createItem = async() => {
-        const URL = `${server}/items/create`
+        const URL = `${serverConstants.server}/items/create`
         const item = {
             name: formValues.name,
             price: formValues.price,

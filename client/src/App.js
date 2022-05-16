@@ -1,6 +1,5 @@
 import './App.css';
 import ViewItems from "./components/ViewItems";
-import serverConstants from "./constants/server";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import CreateItem from "./components/CreateItem";
 import {Container} from "@mui/material";
@@ -15,9 +14,9 @@ function App() {
                 <br/><br/>
                 <Container maxWidth="lg">
                     <Routes>
-                        <Route path="/" element={<ViewItems server={serverConstants.server} exact/>} />
-                        <Route path="/create" element={<CreateItem server={serverConstants.server}/>} />
-                        <Route path="/edit" element={<EditItem server={serverConstants.server}/>} />
+                        <Route path="/" element={<ViewItems exact/>} />
+                        <Route path="/create" element={<CreateItem />} />
+                        <Route path="/edit" element={<EditItem />} />
                         {/*<Route path="/delete" element={<Invoices />} />*/}
                         {/*<Route path="/restore" element={<Invoices />} />*/}
                     </Routes>
