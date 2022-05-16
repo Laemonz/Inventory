@@ -5,13 +5,16 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import {useState} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
-const CreateItem = (props) => {
+const EditItem = (props) => {
     const {server} = props;
     const [formValues, setFormValues] = useState();
     const navigate = useNavigate();
+    const location = useLocation();
+    const id = location.state.id
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -21,26 +24,27 @@ const CreateItem = (props) => {
         });
     };
 
-    const createItem = async() => {
-        const URL = `${server}/items/create`
-        const item = {
+    const editItem = async() => {
+        const URL = `${server}/items/edit`
+        const data = {
+            id,
             name: formValues.name,
             price: formValues.price,
         }
-        await axios.post(URL, item)
+        await axios.patch(URL, data)
         //todo: add error handling
     }
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        await createItem();
+        await editItem();
         navigate('/');
     };
 
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
-                Create Item
+                Edit Item
             </Typography>
             <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
@@ -70,7 +74,7 @@ const CreateItem = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                    <Button variant="contained" color="primary" type="submit">
-                       Create
+                       Update Item
                    </Button>
                 </Grid>
             </Grid>
@@ -79,4 +83,4 @@ const CreateItem = (props) => {
     );
 }
 
-export default CreateItem;
+export default EditItem;

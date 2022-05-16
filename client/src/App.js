@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import CreateItem from "./components/CreateItem";
 import {Container} from "@mui/material";
 import ItemAppBar from "./components/AppBar";
+import EditItem from "./components/EditItem";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<ViewItems server={serverConstants.server} exact/>} />
                         <Route path="/create" element={<CreateItem server={serverConstants.server}/>} />
+                        <Route path="/edit" element={<EditItem server={serverConstants.server}/>} />
                         {/*<Route path="/delete" element={<Invoices />} />*/}
                         {/*<Route path="/restore" element={<Invoices />} />*/}
                     </Routes>

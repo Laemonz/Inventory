@@ -8,12 +8,6 @@ const ViewItems = (props) => {
     const [items, setItems] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
-    const ItemActionProps = {
-        handleEdit: () => console.log('Clicked Edit'),
-        handleDelete: () => console.log('Clicked Delete'),
-        handleRestore: () => console.log('Clicked Restore'),
-    };
-
     useEffect(() => {
         const getItems = async() => {
             const URL = `${server}/items/`
@@ -52,12 +46,7 @@ const ViewItems = (props) => {
                             <TableCell align="right">{item.deleted ? 'Yes' : 'No'}</TableCell>
                             <TableCell align="right">{item.deletionComment}</TableCell>
                             <TableCell align="center">
-                                <ItemActions {
-                                    ...{
-                                        ...ItemActionProps,
-                                        id: item._id,
-                                    }
-                                }/>
+                                <ItemActions id={item._id}/>
                             </TableCell>
                         </TableRow>
                     ))}

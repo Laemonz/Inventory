@@ -3,9 +3,17 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/Restore';
+import { useNavigate } from "react-router-dom";
+
 
 const ItemActions = (props) => {
-    const {handleEdit, handleDelete, handleRestore } = props;
+    const {id} = props
+    const navigate = useNavigate();
+
+    const handleEdit = () => navigate('/edit', {state: {id}})
+    const handleDelete = () => navigate('/delete', {state: {id}})
+    const handleRestore = () => navigate('/restore', {state: {id}})
+
     return (
         <>
             <IconButton aria-label="edit" onClick={handleEdit}>
