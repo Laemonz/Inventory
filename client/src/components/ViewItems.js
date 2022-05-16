@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from "react";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress} from '@mui/material'
+import React, {useEffect, useState} from "react";
+import {CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material'
 import axios from "axios";
 import ItemActions from "./ItemActions";
 import serverConstants from "../constants/server";
@@ -7,6 +7,17 @@ import serverConstants from "../constants/server";
 const ViewItems = () => {
     const [items, setItems] = useState();
     const [isLoading, setIsLoading] = useState(true);
+
+    const restoreCallback = (id) =>{
+        const newItems = items.slice();
+        const index = items.findIndex( (element) => element._id === id)
+        newItems[index] = {
+            ...items[index],
+            deleted: false,
+            deletionComment: null,
+        };
+        setItems(newItems);
+    }
 
     useEffect(() => {
         const getItems = async() => {
@@ -46,7 +57,7 @@ const ViewItems = () => {
                             <TableCell align="right">{item.deleted ? 'Yes' : 'No'}</TableCell>
                             <TableCell align="right">{item.deletionComment}</TableCell>
                             <TableCell align="center">
-                                <ItemActions id={item._id}/>
+                                <ItemActions id={item._id} restoreCallback={restoreCallback}/>
                             </TableCell>
                         </TableRow>
                     ))}

@@ -4,15 +4,23 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/Restore';
 import { useNavigate } from "react-router-dom";
+import serverConstants from "../constants/server";
+import axios from "axios";
 
 
 const ItemActions = (props) => {
-    const {id} = props
+    const {id, restoreCallback} = props
     const navigate = useNavigate();
 
     const handleEdit = () => navigate('/edit', {state: {id}})
     const handleDelete = () => navigate('/delete', {state: {id}})
-    const handleRestore = () => navigate('/restore', {state: {id}})
+    const handleRestore = async() => {
+        const URL = `${serverConstants.server}/items/restore`;
+        await axios.patch(URL, {id})
+        //todo: add error handling
+
+        restoreCallback(id);
+    }
 
     return (
         <>
