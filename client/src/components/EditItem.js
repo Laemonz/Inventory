@@ -7,6 +7,7 @@ import {useState} from "react";
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import serverConstants from "../constants/server";
+import {Alert} from "@mui/material";
 
 
 const EditItem = () => {
@@ -19,6 +20,7 @@ const EditItem = () => {
         name,
         price,
     });
+    const [errorState, setErrorState] = useState();
 
 
     const handleInputChange = (e) => {
@@ -36,14 +38,17 @@ const EditItem = () => {
             name: formValues.name,
             price: formValues.price,
         }
-        await axios.patch(URL, data)
-        //todo: add error handling
+        try{
+            await axios.patch(URL, data);
+            navigate('/');
+        } catch (error) {
+            setErrorState(error.response)
+        }
     }
 
     const handleSubmit = async(event) => {
         event.preventDefault();
         await editItem();
-        navigate('/');
     };
 
     return (
@@ -80,6 +85,9 @@ const EditItem = () => {
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    {errorState && (
+                        <Alert severity="error" sx={{ margin: '5px' }}>Cannot edit item - {errorState.data.message}</Alert>
+                    )}
                    <Button variant="contained" color="primary" type="submit">
                        Update Item
                    </Button>

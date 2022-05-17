@@ -6,10 +6,12 @@ import {useState} from "react";
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import serverConstants from "../constants/server";
+import {Alert} from "@mui/material";
 
 
 const DeleteItem = () => {
     const [formValues, setFormValues] = useState();
+    const [errorState, setErrorState] = useState();
     const navigate = useNavigate();
     const location = useLocation();
     const id = location.state.id
@@ -24,19 +26,23 @@ const DeleteItem = () => {
     };
 
     const deleteItem = async() => {
+        setErrorState(null);
         const URL = `${serverConstants.server}/items/delete`
         const data = {
             id,
             reason: formValues.reason,
         }
-        await axios.patch(URL, data)
-        //todo add error handling
+        try{
+            await axios.patch(URL, data);
+            navigate('/');
+        } catch (error) {
+            setErrorState(error.response)
+        }
     }
 
     const handleSubmit = async(event) => {
         event.preventDefault();
         await deleteItem();
-        navigate('/');
     };
 
     return (
@@ -55,6 +61,9 @@ const DeleteItem = () => {
                     variant="standard"
                     onChange={handleInputChange}
                 />
+                {errorState && (
+                    <Alert severity="error" sx={{ margin: '5px' }}>Cannot delete item - {errorState.data.message}</Alert>
+                )}
                <Button variant="contained" color="primary" type="submit">
                    Delete Item
                </Button>

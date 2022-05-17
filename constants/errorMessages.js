@@ -1,5 +1,5 @@
 const errorMessages = {
-    invalidItem: 'Invalid item or item id',
+    invalidItem: 'Invalid item',
     itemNotFound: 'Item not found',
     invalidReason: 'Invalid reason',
     itemAlreadyDeleted: 'Item is already deleted',

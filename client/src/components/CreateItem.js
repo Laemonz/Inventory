@@ -7,10 +7,12 @@ import {useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import serverConstants from "../constants/server";
+import {Alert} from "@mui/material";
 
 
 const CreateItem = () => {
     const [formValues, setFormValues] = useState();
+    const [errorState, setErrorState] = useState();
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -27,14 +29,17 @@ const CreateItem = () => {
             name: formValues.name,
             price: formValues.price,
         }
-        await axios.post(URL, item)
-        //todo: add error handling
+        try{
+            await axios.post(URL, item);
+            navigate('/');
+        } catch (error) {
+            setErrorState(error.response)
+        }
     }
 
     const handleSubmit = async(event) => {
         event.preventDefault();
         await createItem();
-        navigate('/');
     };
 
     return (
@@ -69,6 +74,9 @@ const CreateItem = () => {
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    {errorState && (
+                        <Alert severity="error" sx={{ margin: '5px' }}>Cannot delete item - {errorState.data.message}</Alert>
+                    )}
                    <Button variant="contained" color="primary" type="submit">
                        Create
                    </Button>
