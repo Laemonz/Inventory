@@ -10,10 +10,15 @@ import serverConstants from "../constants/server";
 
 
 const EditItem = () => {
-    const [formValues, setFormValues] = useState();
     const navigate = useNavigate();
     const location = useLocation();
-    const id = location.state.id
+    console.log(location.state);
+    const { id, name, price } = location.state;
+    console.log(id);
+    const [formValues, setFormValues] = useState({
+        name,
+        price,
+    });
 
 
     const handleInputChange = (e) => {
@@ -57,6 +62,7 @@ const EditItem = () => {
                         fullWidth
                         autoComplete="item-name"
                         variant="standard"
+                        defaultValue={name}
                         onChange={handleInputChange}
                     />
                 </Grid>
@@ -69,6 +75,7 @@ const EditItem = () => {
                         fullWidth
                         autoComplete="item-price"
                         variant="standard"
+                        defaultValue={price}
                         onChange={handleInputChange}
                     />
                 </Grid>

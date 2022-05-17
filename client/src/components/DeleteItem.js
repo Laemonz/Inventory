@@ -30,7 +30,7 @@ const DeleteItem = () => {
             reason: formValues.reason,
         }
         await axios.patch(URL, data)
-        //todo: add error handling
+        //todo add error handling
     }
 
     const handleSubmit = async(event) => {

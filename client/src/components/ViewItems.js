@@ -57,7 +57,7 @@ const ViewItems = () => {
                             <TableCell align="right">{item.deleted ? 'Yes' : 'No'}</TableCell>
                             <TableCell align="right">{item.deletionComment}</TableCell>
                             <TableCell align="center">
-                                <ItemActions id={item._id} restoreCallback={restoreCallback}/>
+                                <ItemActions item={item} restoreCallback={restoreCallback}/>
                             </TableCell>
                         </TableRow>
                     ))}

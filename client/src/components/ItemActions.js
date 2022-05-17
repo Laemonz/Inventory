@@ -9,10 +9,11 @@ import axios from "axios";
 
 
 const ItemActions = (props) => {
-    const {id, restoreCallback} = props
+    const {item, restoreCallback} = props
+    const { _id: id, name, price } = item
     const navigate = useNavigate();
 
-    const handleEdit = () => navigate('/edit', {state: {id}})
+    const handleEdit = () => navigate('/edit', {state: {id, name, price}})
     const handleDelete = () => navigate('/delete', {state: {id}})
     const handleRestore = async() => {
         const URL = `${serverConstants.server}/items/restore`;
