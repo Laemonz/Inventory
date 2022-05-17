@@ -9,6 +9,16 @@ const {
     deleteItem,
     restoreItem
 } = require('../operations/itemOperations')
+const ValidationError = require("../constants/errors/ValidationError");
+const errorCodes = require("../constants/errorCodes");
+const errorMessages = require("../constants/errorMessages");
+
+const validateItem = (name, price) => {
+    const priceNumber = parseInt(price);
+    if (typeof name !== 'string' || isNaN(priceNumber)){
+        throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
+    }
+}
 
 /**
  * Get all items
@@ -16,10 +26,10 @@ const {
 router.route('/').get( async(req, res, next) => {
     console.log('Getting all items')
     try{
-        const items = await getItems()
-        res.status(200).json(items)
+        const items = await getItems();
+        res.status(200).json(items);
     } catch (err) {
-        next(err)
+        next(err);
     }
 })
 
@@ -32,8 +42,9 @@ router.route('/create').post( async(req,res, next) => {
     console.log(`Creating Item with properties name: [${name}] and price: [${price}]`);
 
     try{
-        await createItem(name, price)
-        res.status(200).send('created')
+        validateItem(name, price);
+        const item = await createItem(name, price);
+        res.status(201).send(item);
     }
     catch(err){
         next(err);
@@ -62,8 +73,9 @@ router.route('/edit/').patch(async(req, res, next) => {
     console.log(`Updating Item [${id}] with properties name: [${name}] and price: [${price}]`);
 
     try{
-        await editItem(id, name, price)
-        res.status(200).send('edited')
+        validateItem(name, price);
+        const item = await editItem(id, name, price);
+        res.status(200).send(item);
     } catch(err){
         next(err);
     }
@@ -78,9 +90,15 @@ router.route('/edit/').patch(async(req, res, next) => {
     const reason = req.body.reason;
     console.log(`Deleting Item with properties id: [${id}] and reason: [${reason}]`);
 
+
     try{
-        await deleteItem(id, reason)
-        res.status(200).send('deleted')
+        if (!reason || typeof reason !=='string'){
+            throw new ValidationError(errorCodes.invalidReason, errorMessages.invalidReason);
+        }
+        //todo maybe handle this a bit better
+
+        const item = await deleteItem(id, reason);
+        res.status(200).send(item);
     } catch(err){
         next(err);
     }
@@ -95,8 +113,8 @@ router.route('/edit/').patch(async(req, res, next) => {
      console.log(`Restoring Item with properties id: [${id}]`);
 
      try{
-         await restoreItem(id)
-         res.status(200).send('restored')
+         const item = await restoreItem(id);
+         res.status(200).json(item);
      } catch(err){
          next(err);
      }

@@ -6,10 +6,32 @@ const { validationError, castError } = require('../constants/errorNames')
 const errorCodes = require('../constants/errorCodes')
 const errorMessages = require('../constants/errorMessages')
 
-const ValidationError = require('../constants/errors/ValidationError')
 const InternalServerError = require('../constants/errors/InternalServerError')
+const ValidationError = require('../constants/errors/ValidationError')
 const NotFoundError = require('../constants/errors/NotFoundError')
+const ConflictError = require('../constants/errors/ConflictError')
 
+
+const findAndUpdate = async({ filter, update, options = { new: true, lean: true } }) => {
+    let doc;
+    try{
+        doc = await Item.findOneAndUpdate(filter, {$set: update}, options);
+    } catch (err){
+        if (err.name === validationError){
+            throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
+        }
+        else if (err.name === castError){
+            throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
+        }
+        else{
+            throw new InternalServerError();
+        }
+    }
+    if (!doc){
+        throw new NotFoundError(errorCodes.itemNotFound, errorMessages.itemNotFound)
+    }
+    return doc;
+}
 
 /**
  * Get all items
@@ -29,6 +51,7 @@ const createItem= async(name, price) => {
 
     try{
         await item.save();
+        return item;
     }
     catch(err){
         if (err.name === validationError){
@@ -65,69 +88,46 @@ const getItem = async(id) => {
  * Edit an item
  */
 const editItem = async(id, name, price) => {
-    const priceNumber = parseInt(price);
-    if (typeof name !== 'string' || isNaN(priceNumber)){
-        throw new ValidationError(errorCodes.invalidItem, errorMessages.invalidItem);
-    }
-
-    Item.findOneAndUpdate(
-        {id: id},
-        {
-            $set: {
-                name: name,
-                price: priceNumber,
-            }
-        },
-        (error) => {
-            if (error) {
-                throw new NotFoundError(errorCodes.itemNotFound, errorMessages.itemNotFound)
-            }
-        }
-    )
+    const filter = { _id: id };
+    const update = {
+        name: name,
+        price: price,
+    };
+    return findAndUpdate({filter, update});
 }
 
 /**
  * Delete an item
  */
 const deleteItem = async(id, reason) => {
-    if (!reason || typeof reason !=='string'){
-        throw new ValidationError(errorCodes.invalidReason, errorMessages.invalidReason)
+    const item = await getItem(id);
+    if (item.deleted){
+        throw new ConflictError(errorCodes.itemAlreadyDeleted, errorMessages.itemAlreadyDeleted);
     }
 
-    Item.findOneAndUpdate(
-        {id: id},
-        {
-            $set: {
-                deleted: true,
-                deletionComment: reason,
-            }
-        },
-        (error) => {
-            if (error) {
-                throw new NotFoundError(errorCodes.itemNotFound, errorMessages.itemNotFound)
-            }
-        }
-    )
+    const filter = { _id: id };
+    const update = {
+        deleted: true,
+        deletionComment: reason,
+    };
+    return findAndUpdate({filter, update});
 }
 
 /**
  * Restore an item
  */
 const restoreItem = async(id) => {
-    Item.findOneAndUpdate(
-        {id: id},
-        {
-            $set: {
-                deleted: false,
-                deletionComment: null,
-            }
-        },
-        (error) => {
-            if (error) {
-                throw new NotFoundError(errorCodes.itemNotFound, errorMessages.itemNotFound)
-            }
-        }
-    )
+    const item = await getItem(id);
+    if (!item.deleted){
+        throw new ConflictError(errorCodes.itemNotDeleted, errorMessages.itemNotDeleted);
+    }
+
+    const filter = { _id: id };
+    const update = {
+        deleted: false,
+        deletionComment: null,
+    };
+    return findAndUpdate({filter, update});
 }
 
 
