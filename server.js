@@ -23,9 +23,8 @@ const PORT = process.env.PORT || 4000;
 
 
 // set NODE_ENV to production to run the production build of the app
-// this will use express to send our react app to the client
 if (process.env.NODE_ENV === 'production'){
-    console.log('Server is running in production mode');
+    console.log('Application is running in production mode');
 
     app.use(express.static(path.join(__dirname, '/client/build')))
     app.get('/*', (req, res) => {
@@ -37,7 +36,7 @@ if (process.env.NODE_ENV === 'production'){
     })
 } else {
     app.get('/', (req,res) => {
-        res.send('Server running');
+        res.send('Server is running in development mode');
     })
 }
 
@@ -51,6 +50,6 @@ connection.once('open', () =>  {
 })
 
 app.listen(PORT, () => {
-        console.log("Server is running on Port: " + PORT);
+        console.log("Listening on Port: " + PORT);
         (MONGODB_URI==='mongodb://127.0.0.1:27017') ? console.log('Connecting to local MongoDB database...') : console.log('Connecting to MongoDB Atlas database...')
 });
