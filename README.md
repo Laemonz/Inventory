@@ -2,19 +2,11 @@
 This is a Fullstack Application developed with MongoDB, Express, React, and Nodejs. 
 
 ## Setup / Instalation ##
-Download the project and open the root directory.
-Run the following commands to install the required packages
-
-```bash
-npm i
-
-cd client
-npm i
-```
+Run `npm i` to install dependencies.
 
 ## Running the Production Build
 1. Create a `.env` file in the root directory of the project with the following contents.  
-   If using replit, click the lock icon on the rightmost tab instead of using an env file.
+   If using replit, these should already be setup and you can ignore this step
 
    ```bash
    NODE_ENV=production

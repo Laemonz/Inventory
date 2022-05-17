@@ -19,7 +19,7 @@ app.use('/items', itemsRouter)
 app.use(errorHandler);
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017' //connect to DB or use local DB
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.SERVER_PORT || 4000;
 
 
 // set NODE_ENV to production to run the production build of the app
