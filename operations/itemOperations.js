@@ -88,6 +88,10 @@ const getItem = async(id) => {
  * Edit an item
  */
 const editItem = async(id, name, price) => {
+    const item = await getItem(id);
+    if (item.deleted){
+        throw new ConflictError(errorCodes.itemDeletedEdit, errorMessages.itemDeletedEdit);
+    }
     const filter = { _id: id };
     const update = {
         name: name,

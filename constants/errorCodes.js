@@ -4,6 +4,7 @@ const errorCodes = {
     invalidReason: 'invalid.reason',
     itemAlreadyDeleted: 'item.already.deleted',
     itemNotDeleted: 'item.not.deleted',
+    itemDeletedEdit: 'item.deleted.nonEditable',
     internalServerError: 'internal.server.error'
 }
 
